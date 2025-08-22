@@ -41,7 +41,7 @@ runs:
       shell: bash
       run: |
         if [ -z "${{ inputs.commit_sha }}" ]; then
-          echo "commit-sha=${{ context.github.sha }}" >> $GITHUB_OUTPUT
+          echo "commit-sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
         else
           echo "commit-sha=${{ inputs.commit_sha }}" >> $GITHUB_OUTPUT
         fi
