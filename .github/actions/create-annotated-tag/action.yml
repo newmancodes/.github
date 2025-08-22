@@ -54,13 +54,13 @@ runs:
           const createTagResponse = await github.rest.git.createTag({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            tag: inputs.tag_name,
+            tag: '${{ inputs.tag_name }}',
             tagger: {
-              name: inputs.tagger_name,
-              email: inputs.tagger_email,
-              date: new Date().toISOString()
+              name: '${{ inputs.tagger_name }}',
+              email: '${{ inputs.tagger_email }}',
+              date: new Date().toISOString() }}
             },
-            message: inputs.tag_message,
+            message: ${{ inputs.tag_message }},
             object: '${{ steps.determine-sha.outputs.commit-sha }}',
             type: 'commit'
           });
@@ -78,8 +78,8 @@ runs:
           const createRefResponse = await github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: ${{ steps.create-tag.outputs.tag-ref }},
-            sha: ${{ steps.determine-sha.outputs.commit-sha }}
+            ref: '${{ steps.create-tag.outputs.tag-ref }}',
+            sha: '${{ steps.determine-sha.outputs.commit-sha }}'
           });
 
           if (createRefResponse.status !== 201) {
