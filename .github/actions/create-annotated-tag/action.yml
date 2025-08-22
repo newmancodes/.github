@@ -83,5 +83,5 @@ runs:
           });
 
           if (createRefResponse.status !== 201) {
-            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${{ createRefResponse.status }} (${{ createRefResponse.statusText }})`);
+            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status} (${createRefResponse.statusText})`);
           }
