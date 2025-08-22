@@ -1,0 +1,70 @@
+name: Create Annotated Tag
+description: Creates an annotated tag with an associated ref in the target repository for the supplied snapshot (or context.sha if no snapshot is supplied).
+author: Stephen Newman
+
+inputs:
+  commit_sha:
+    description: The SHA of the commit to tag. Defaults to the current GitHub context's SHA value.
+    default: ${{ context.sha }}
+    required: false
+  tag_name:
+    description: The name of the tag to create.
+    required: true
+  tag_message:
+    description: The message to include in the tag.
+    required: true
+  tagger_name:
+    description: The name of the tagger. Defaults to the GitHub Actions bot.
+    default: 'github-actions[bot]'
+  tagger_email:
+    description: The email of the tagger. Defaults to the GitHub Actions bot's email.
+    default: '41898282+github-actions[bot]@users.noreply.github.com'
+
+outputs:
+  tag_ref:
+    description: The Git reference for the created tag.
+    value: ${{ steps.create-tag.outputs.tag-ref }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: Create Tag
+      id: create-tag
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const createTagResponse = await github.rest.git.createTag({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag: inputs.tag_name,
+            tagger: {
+              name: inputs.tagger_name,
+              email: inputs.tagger_email,
+              date: new Date().toISOString()
+            },
+            message: inputs.tag_message,
+            object: inputs.commit_sha,
+            type: 'commit'
+          });
+
+          if (createTagResponse.status === 201) {
+            core.setOutput('tag-ref', `refs/tags/${createTagResponse.data.tag}`);
+          } else {
+            core.setFailed(`Failed to create tag '${inputs.tag_name}': ${createTagResponse.status} (${createTagResponse.statusText})`);
+          }
+
+    - name: Create Tag Reference
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const createRefResponse = await github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: ${{ steps.create-tag.outputs.tag-ref }},
+            sha: ${{ inputs.commit_sha }}
+          });
+
+          if (createRefResponse.status !== 201) {
+            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status} (${createRefResponse.statusText})`);
+          }
