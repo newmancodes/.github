@@ -67,6 +67,7 @@ runs:
 
           if (createTagResponse.status === 201) {
             core.setOutput('tag-ref', `refs/tags/${createTagResponse.data.tag}`);
+            core.info(`Created tag '${{ inputs.tag_name }}' at commit '${{ steps.determine-sha.outputs.commit-sha }}' with object id '${{ createTagResponse.data.sha }}'.`);
           } else {
             core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${createTagResponse.status} (${createTagResponse.statusText})`);
           }
