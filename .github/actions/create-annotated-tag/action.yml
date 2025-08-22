@@ -58,7 +58,7 @@ runs:
             tagger: {
               name: '${{ inputs.tagger_name }}',
               email: '${{ inputs.tagger_email }}',
-              date: new Date().toISOString() }}
+              date: new Date().toISOString()
             },
             message: '${{ inputs.tag_message }}',
             object: '${{ steps.determine-sha.outputs.commit-sha }}',
