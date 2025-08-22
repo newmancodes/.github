@@ -5,7 +5,7 @@ author: Stephen Newman
 inputs:
   commit_sha:
     description: The SHA of the commit to tag. Defaults to the current GitHub context's SHA value.
-    default: '${{ context.sha }}''
+    default: '${{ context.sha }}'
     required: false
     type: string
   tag_name:
@@ -19,10 +19,12 @@ inputs:
   tagger_name:
     description: The name of the tagger. Defaults to the GitHub Actions bot.
     default: 'github-actions[bot]'
+    required: false
     type: string
   tagger_email:
     description: The email of the tagger. Defaults to the GitHub Actions bot's email.
     default: '41898282+github-actions[bot]@users.noreply.github.com'
+    required: false
     type: string
 
 outputs:
