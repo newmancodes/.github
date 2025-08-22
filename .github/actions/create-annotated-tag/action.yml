@@ -67,9 +67,9 @@ runs:
 
           if (createTagResponse.status === 201) {
             core.setOutput('tag-ref', `refs/tags/${createTagResponse.data.tag}`);
-            core.info(`Created tag '${{ inputs.tag_name }}' at commit '${{ steps.determine-sha.outputs.commit-sha }}' with object id '${createTagResponse.data.sha}'.`);
+            core.info(`Created annotated tag '${{ inputs.tag_name }}' at commit '${{ steps.determine-sha.outputs.commit-sha }}' with object id '${createTagResponse.data.sha}'.`);
           } else {
-            core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${createTagResponse.status} (${createTagResponse.statusText})`);
+            core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${createTagResponse.status}`);
           }
 
     - name: Create Tag Reference
@@ -84,5 +84,5 @@ runs:
           });
 
           if (createRefResponse.status !== 201) {
-            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status} (${createRefResponse.statusText})`);
+            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status}`);
           }
