@@ -60,7 +60,7 @@ runs:
               email: '${{ inputs.tagger_email }}',
               date: new Date().toISOString() }}
             },
-            message: ${{ inputs.tag_message }},
+            message: '${{ inputs.tag_message }}',
             object: '${{ steps.determine-sha.outputs.commit-sha }}',
             type: 'commit'
           });
