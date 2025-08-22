@@ -66,9 +66,9 @@ runs:
           });
 
           if (createTagResponse.status === 201) {
-            core.setOutput('tag-ref', `refs/tags/${{ createTagResponse.data.tag }}`);
+            core.setOutput('tag-ref', `refs/tags/${createTagResponse.data.tag}`);
           } else {
-            core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${{ createTagResponse.status }} (${{ createTagResponse.statusText }})`);
+            core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${createTagResponse.status} (${createTagResponse.statusText})`);
           }
 
     - name: Create Tag Reference
