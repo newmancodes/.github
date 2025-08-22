@@ -83,6 +83,8 @@ runs:
             sha: '${{ steps.determine-sha.outputs.commit-sha }}'
           });
 
-          if (createRefResponse.status !== 201) {
+          if (createRefResponse.status === 201) {
+            core.info(`Created tag reference '${{ steps.create-tag.outputs.tag-ref }}' pointing to commit '${{ steps.determine-sha.outputs.commit-sha }}'.`);
+          } else {
             core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status}`);
           }
