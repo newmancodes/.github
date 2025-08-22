@@ -41,7 +41,7 @@ runs:
       shell: bash
       run: |
         if [ -z "${{ inputs.commit_sha }}" ]; then
-          echo "commit-sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "commit-sha=${{ context.github.sha }}" >> $GITHUB_OUTPUT
         else
           echo "commit-sha=${{ inputs.commit_sha }}" >> $GITHUB_OUTPUT
         fi
@@ -66,9 +66,9 @@ runs:
           });
 
           if (createTagResponse.status === 201) {
-            core.setOutput('tag-ref', `refs/tags/${createTagResponse.data.tag}`);
+            core.setOutput('tag-ref', `refs/tags/${{ createTagResponse.data.tag }}`);
           } else {
-            core.setFailed(`Failed to create tag '${inputs.tag_name}': ${createTagResponse.status} (${createTagResponse.statusText})`);
+            core.setFailed(`Failed to create tag '${{ inputs.tag_name }}': ${{ createTagResponse.status }} (${{ createTagResponse.statusText }})`);
           }
 
     - name: Create Tag Reference
@@ -83,5 +83,5 @@ runs:
           });
 
           if (createRefResponse.status !== 201) {
-            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${createRefResponse.status} (${createRefResponse.statusText})`);
+            core.setFailed(`Failed to create tag reference '${{ steps.create-tag.outputs.tag-ref }}': ${{ createRefResponse.status }} (${{ createRefResponse.statusText }})`);
           }
