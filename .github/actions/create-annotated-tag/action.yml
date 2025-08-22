@@ -5,7 +5,7 @@ author: Stephen Newman
 inputs:
   commit_sha:
     description: The SHA of the commit to tag. Defaults to the current GitHub context's SHA value.
-    default: '${{ context.sha }}'
+    default: '${{ context.github.sha }}'
     required: false
     type: string
   tag_name:
